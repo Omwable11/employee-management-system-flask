@@ -1,0 +1,174 @@
+{% extends "base.html" %} {% block title %}Dashboard{% endblock %} {% block
+content %}
+
+<div class="container mt-4">
+  <h2 class="mb-4">Dashboard</h2>
+
+  <!-- Dashboard Cards -->
+  <div class="row">
+    <div class="col-md-3 mb-3">
+      <div class="card text-white bg-primary shadow">
+        <div class="card-body text-center">
+          <h5>Total Employees</h5>
+          <h2>{{ total_employees }}</h2>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-3 mb-3">
+      <div class="card text-white bg-success shadow">
+        <div class="card-body text-center">
+          <h5>Departments</h5>
+          <h2>{{ total_departments }}</h2>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-3 mb-3">
+      <div class="card text-white bg-warning shadow">
+        <div class="card-body text-center">
+          <h5>Positions</h5>
+          <h2>{{ total_positions }}</h2>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-3 mb-3">
+      <div class="card text-white bg-danger shadow">
+        <div class="card-body text-center">
+          <h5>Leave Requests</h5>
+          <h2>{{ total_leaves }}</h2>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Recent Employees -->
+  <div class="card shadow mt-4">
+    <div class="card-header bg-dark text-white">
+      <h5 class="mb-0">Recent Employees</h5>
+    </div>
+
+    <div class="card-body">
+      <table class="table table-hover table-bordered">
+        <thead class="table-light">
+          <tr>
+            <th>Name</th>
+            <th>Department</th>
+            <th>Position</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          {% if recent_employees %} {% for emp in recent_employees %}
+
+          <tr>
+            <td>{{ emp.first_name }} {{ emp.last_name }}</td>
+
+            <td>
+              {% if emp.department %} {{ emp.department.name }} {% else %} N/A
+              {% endif %}
+            </td>
+
+            <td>{{ emp.position or "N/A" }}</td>
+          </tr>
+
+          {% endfor %} {% else %}
+
+          <tr>
+            <td colspan="3" class="text-center">No employees found.</td>
+          </tr>
+
+          {% endif %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Charts -->
+  <div class="row mt-5">
+    <div class="col-md-6 mb-4">
+      <div class="card shadow">
+        <div class="card-header bg-primary text-white">
+          Employees by Department
+        </div>
+
+        <div class="card-body">
+          <canvas id="departmentChart"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-6 mb-4">
+      <div class="card shadow">
+        <div class="card-header bg-success text-white">Leave Status</div>
+
+        <div class="card-body">
+          <canvas id="leaveChart"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+
+  const deptLabels = [
+  {% for item in department_data %}
+      "{{ item[0] }}",
+  {% endfor %}
+  ];
+
+  const deptValues = [
+  {% for item in department_data %}
+      {{ item[1] }},
+  {% endfor %}
+  ];
+
+  new Chart(document.getElementById("departmentChart"), {
+      type: "bar",
+      data: {
+          labels: deptLabels,
+          datasets: [{
+              label: "Employees",
+              data: deptValues,
+              borderWidth: 1
+          }]
+      },
+      options: {
+          responsive: true,
+          scales: {
+              y: {
+                  beginAtZero: true
+              }
+          }
+      }
+  });
+
+  const leaveLabels = [
+  {% for item in leave_data %}
+      "{{ item[0] }}",
+  {% endfor %}
+  ];
+
+  const leaveValues = [
+  {% for item in leave_data %}
+      {{ item[1] }},
+  {% endfor %}
+  ];
+
+  new Chart(document.getElementById("leaveChart"), {
+      type: "pie",
+      data: {
+          labels: leaveLabels,
+          datasets: [{
+              data: leaveValues
+          }]
+      },
+      options: {
+          responsive: true
+      }
+  });
+</script>
+
+{% endblock %}

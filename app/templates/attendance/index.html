@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+
+{% block title %}Attendance{% endblock %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <h2>Attendance</h2>
+
+        <a href="{{ url_for('attendance.checkin') }}"
+           class="btn btn-success">
+            Check In
+        </a>
+
+    </div>
+
+    {% if records %}
+
+    <table class="table table-bordered table-hover">
+
+        <thead class="table-dark">
+
+        <tr>
+            <th>Employee</th>
+            <th>Date</th>
+            <th>Check In</th>
+            <th>Check Out</th>
+            <th>Status</th>
+            <th>Action</th>
+        </tr>
+
+        </thead>
+
+        <tbody>
+
+        {% for record in records %}
+
+        <tr>
+
+            <td>
+                {{ record.employee.first_name }}
+                {{ record.employee.last_name }}
+            </td>
+
+            <td>{{ record.date }}</td>
+
+            <td>{{ record.check_in }}</td>
+
+            <td>
+                {{ record.check_out or "-" }}
+            </td>
+
+            <td>
+                <span class="badge bg-success">
+                    {{ record.status }}
+                </span>
+            </td>
+
+            <td>
+
+                {% if not record.check_out %}
+
+                <a href="{{ url_for('attendance.checkout', id=record.id) }}"
+                   class="btn btn-danger btn-sm">
+
+                    Check Out
+
+                </a>
+
+                {% else %}
+
+                <span class="text-muted">
+                    Completed
+                </span>
+
+                {% endif %}
+
+            </td>
+
+        </tr>
+
+        {% endfor %}
+
+        </tbody>
+
+    </table>
+
+    {% else %}
+
+    <div class="alert alert-info">
+        No attendance records found.
+    </div>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}

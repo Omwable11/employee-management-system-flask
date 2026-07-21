@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+
+{% block title %}Add Employee{% endblock %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+<h2 class="mb-4">Add Employee</h2>
+
+<form method="POST">
+
+{{ form.hidden_tag() }}
+
+<div class="row">
+
+<div class="col-md-6 mb-3">
+{{ form.first_name.label(class="form-label") }}
+{{ form.first_name(class="form-control") }}
+</div>
+
+<div class="col-md-6 mb-3">
+{{ form.last_name.label(class="form-label") }}
+{{ form.last_name(class="form-control") }}
+</div>
+
+<div class="col-md-6 mb-3">
+{{ form.email.label(class="form-label") }}
+{{ form.email(class="form-control") }}
+</div>
+
+<div class="col-md-6 mb-3">
+{{ form.phone.label(class="form-label") }}
+{{ form.phone(class="form-control") }}
+</div>
+
+<div class="col-md-6 mb-3">
+{{ form.department.label(class="form-label") }}
+{{ form.department(class="form-control") }}
+</div>
+
+<div class="col-md-6 mb-3">
+{{ form.position.label(class="form-label") }}
+{{ form.position(class="form-control") }}
+</div>
+
+<div class="col-md-6 mb-3">
+{{ form.salary.label(class="form-label") }}
+{{ form.salary(class="form-control") }}
+</div>
+
+<div class="col-md-6 mb-3">
+{{ form.joining_date.label(class="form-label") }}
+{{ form.joining_date(class="form-control") }}
+</div>
+
+</div>
+
+{{ form.submit(class="btn btn-success") }}
+
+</form>
+
+</div>
+
+{% endblock %}
